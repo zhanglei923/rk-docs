@@ -1,3 +1,4 @@
 node_modules/*
+reports/*
 yarn-error.log
 yarn.lock

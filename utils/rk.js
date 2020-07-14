@@ -4,6 +4,11 @@ var _ = require('lodash');
 var decomment = require('decomment');
 var stripcomments = require('strip-comments')
 
+global.rk_formatLineBreaker = (content)=>{
+    if(!content) return content;
+    return content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+};
+
 var rk = {      
     isCmdFile: function(content){
         if(!content) return false;
