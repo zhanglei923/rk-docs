@@ -17,7 +17,9 @@
     "download": "7.1.0",
     "tar": "5.0.5",
     "detective":"5.2.0",
-    "espree":"7.1.0"
+    "espree":"7.1.0",
+    "decomment": "0.9.2",
+    "strip-comments": "2.0.1"
   },
   "author": "",
   "license": "ISC",
