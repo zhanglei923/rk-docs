@@ -1,5 +1,5 @@
 const regParser = require('../parsers/regParser');
-const astParser = require('../parsers/astParser');
+const astParser_v2 = require('../parsers/astParser2');
 const detParser = require('../parsers/detParser');
 const regParser_v2 = require('../parsers/regParser_v2');
 
@@ -15,7 +15,7 @@ let getRequiresAsArray = (jscontent)=>{
 let parse = (type, content)=>{
     if(type === 'reg')  parser = regParser;
     if(type === 'reg2')  parser = regParser_v2;
-    if(type === 'ast')  parser = astParser;
+    if(type === 'ast2')  parser = astParser_v2;
     if(type === 'det')  parser = detParser;
     
     let result = parser.parse(content);

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@babel/core": "7.9.6",
+    "@babel/preset-env": "7.9.6",
     "json-format": "1.0.1",
     "exec-sh": "0.3.4",
     "rimraf": "2.6.3",
