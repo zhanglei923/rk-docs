@@ -28,6 +28,7 @@ var rk = {
             return true;
         }
         //一些特殊名字处理
+        if(fpath.indexOf(`raphael.js`)>=0) return true;
         if(fpath.indexOf(`handsontable.full`)>=0) return true;
         return false;
     },

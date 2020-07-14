@@ -76,9 +76,11 @@ let parseAst = (syntaxJson, path)=>{
             }
         }
     })
-    console.log(path)
-    console.log(result)
-    GrandFileList[path] = _.uniq(result);
+    // console.log(path)
+    // console.log(result)
+    // GrandFileList[path] = _.uniq(result);
+    result = _.uniq(result);
+    return result;
 }
 
 let getRequires = (jscontent)=>{
@@ -90,6 +92,8 @@ let getRequires = (jscontent)=>{
 };
 let parse = (jscontent, fpath)=>{
     if(jscontent.indexOf('require')<0) return jscontent;//没有require，不需要解析
+    let requireList = [];
+    let requireAsyncList = [];
     try{
         var result = babel.transform(jscontent, {
             plugins: [
@@ -109,14 +113,14 @@ let parse = (jscontent, fpath)=>{
         const ast = espree.parse(jscontent, { 
             ecmaVersion: 10 
         });
-        parseAst(ast, fpath);
+        requireList = parseAst(ast, fpath);
+        if(0)
         fs.writeFileSync(pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json'), JSON.stringify(ast));
     }catch(e){
-        throw e;
+        console.log('fail', fpath)
+        //throw e;
     }
 
-    let requireList = [];
-    let requireAsyncList = [];
     return {
         requireList,
         requireAsyncList
