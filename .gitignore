@@ -3,3 +3,4 @@ reports/*
 yarn-error.log
 yarn.lock
 cmdParsers/report/*
+report/*
