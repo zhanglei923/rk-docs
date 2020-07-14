@@ -1,7 +1,7 @@
-const regParser = require('./parsers/regParser');
-const astParser = require('./parsers/astParser');
-const detParser = require('./parsers/detParser');
-const regParser_v2 = require('./parsers/regParser_v2');
+const regParser = require('../parsers/regParser');
+const astParser = require('../parsers/astParser');
+const detParser = require('../parsers/detParser');
+const regParser_v2 = require('../parsers/regParser_v2');
 
 let getRequiresAsArray = (jscontent)=>{
     let deps = getRequires(jscontent);
