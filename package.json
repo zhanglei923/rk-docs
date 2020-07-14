@@ -10,7 +10,7 @@
     "moment": "2.24.0",
     "axios": "0.18.0",
     "request": "2.88.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "gitlog2": "5.0.2",
     "express": "4.16.4",
     "eachcontent-js": "1.0.9",
