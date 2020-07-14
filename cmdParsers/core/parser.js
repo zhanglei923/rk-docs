@@ -12,13 +12,13 @@ let getRequiresAsArray = (jscontent)=>{
     arr = _.uniq(arr);
     return arr;
 }
-let parse = (type, content)=>{
+let parse = (type, content, fpath)=>{
     if(type === 'reg')  parser = regParser;
     if(type === 'reg2')  parser = regParser_v2;
     if(type === 'ast2')  parser = astParser_v2;
     if(type === 'det')  parser = detParser;
     
-    let result = parser.parse(content);
+    let result = parser.parse(content, fpath);
     return result;
 }
 module.exports = {

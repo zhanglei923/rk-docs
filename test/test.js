@@ -16,16 +16,16 @@ let regtype = 'ast2';//'det';//'reg2';
 let report = {};
 let t0 = new Date()*1;
 eachcontentjs.eachContent(srcfolder, [/\.js$/], (content, fpath)=>{
-    content = rk.cleanCommentsFast(content);
-    if(rk.isCookedJsPath(fpath))
-    try{
-        let result = parser.parse(regtype, content);
-        report[fpath] = result;
-    }catch(e){
-        console.log(e);
-        console.log('error:', fpath);
+    if(!rk.isCookedJsPath(fpath) && !rk.isCookedJs(content)){
+        try{
+            let result = parser.parse(regtype, content, fpath);
+            report[fpath] = result;
+        }catch(e){
+            console.log(e);
+            console.log('error:', fpath);
+        }
+        //console.log(result)
     }
-    //console.log(result)
 })
 let t1 = new Date()*1;
 console.log('cost:', t1-t0);

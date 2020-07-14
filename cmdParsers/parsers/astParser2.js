@@ -13,9 +13,9 @@ let getRequires = (jscontent)=>{
 
     return getPath(requires)
 };
-let parse = (jscontent)=>{
+let parse = (jscontent, fpath)=>{
+    if(jscontent.indexOf('require')<0) return jscontent;//没有require，不需要解析
     try{
-
         var result = babel.transform(jscontent, {
             plugins: [
                 // "@babel/plugin-proposal-object-rest-spread",
@@ -34,6 +34,7 @@ let parse = (jscontent)=>{
         const ast = espree.parse(jscontent, { 
             ecmaVersion: 10 
         });
+        
     }catch(e){
         throw e;
     }

@@ -31,6 +31,31 @@ var rk = {
         if(fpath.indexOf(`handsontable.full`)>=0) return true;
         return false;
     },
+    isCookedJs: function(code){
+        let me = this;
+        if(!code) return false;
+        if(me.isWebpack(code)) return true;
+        return false;
+    },
+    isWebpack: function(src){
+        if(!src) return true;
+        var keywords = [
+                    'if(installedModules[moduleId]', 
+                    'modules[moduleId].call',
+                    '__webpack_require__',
+                    'webpackUniversalModuleDefinition',
+                    '__WEBPACK_EXTERNAL_MODULE'
+                    ];
+
+        var iswebpack = false;
+        for(var i=0;i<keywords.length;i++){
+            if(src.indexOf(keywords[i]) >= 0){
+                iswebpack = true;
+                break;
+            }
+        }
+        return iswebpack;
+    },
     isCommonRequirePath: (raw_path)=>{
         raw_path = _.trim(raw_path);
         let isnormal = true;

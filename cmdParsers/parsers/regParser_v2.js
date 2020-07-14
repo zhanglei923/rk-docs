@@ -81,7 +81,8 @@ let getRequires = (jscontent)=>{
     })
     return getPath(requires)
 };
-let parse = (jscontent)=>{
+let parse = (jscontent, fpath)=>{
+    jscontent = rk.cleanCommentsFast(jscontent);
     let requireList = getRequires(jscontent);
     let requireAsyncList = [];
     return {
