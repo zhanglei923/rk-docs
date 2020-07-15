@@ -1,5 +1,6 @@
 let fs = require('fs');
 let pathutil = require('path');
+let _ = require('lodash');
 let parser = require('./parser');
 var minimist = require('minimist');
 let makeDir = require("make-dir")
@@ -9,6 +10,37 @@ const { first } = require('lodash');
 
 let thisdir = pathutil.parse(__filename).dir;
 
+let judge = (report1, report2)=>{
+    //console.log(report1, report2)
+    
+    let errors = [];
+    for(let fpath in report1){
+        let o1 = report1[fpath];
+        let o2 = report2[fpath];
+        if(!o2){
+            errors.push({
+                errMsg: `one of parser not return fpath ${fpath}`
+            });
+        }else{
+            let requireList1 = o1.requireList;
+            let requireList2 = o1.requireList;
+            let diff = _.difference(requireList1, requireList2);
+            if(diff.length > 0){
+                errors.push({
+                    errMsg: `find different: ${diff}`
+                });
+            }
+        }
+    }
+    for(let fpath in report2){
+        if(!report1[fpath]) {
+            errors.push({
+                errMsg: `one of parser not return fpath ${fpath}`
+            });
+        }
+    }
+    return errors;
+}
 let compare = (srcfolder, reportfolder)=>{
     let report1 = {};
     let report2 = {};
@@ -27,10 +59,19 @@ let compare = (srcfolder, reportfolder)=>{
     let t1 = new Date()*1;
     console.log('cost:', t1-t0);
 
-    fs.writeFileSync(pathutil.resolve(reportfolder, './report1.json'), jsonformat(report1));
-    fs.writeFileSync(pathutil.resolve(reportfolder, './report2.json'), jsonformat(report2));
+    let errors = judge(report1, report2)
+    if(errors.length > 0){
+        console.log(errors)
+    }else{
+        console.log('reg==ast!')
+    }
+    if(0){
+        fs.writeFileSync(pathutil.resolve(reportfolder, './report1.json'), jsonformat(report1));
+        fs.writeFileSync(pathutil.resolve(reportfolder, './report2.json'), jsonformat(report2));
+    }
 };
 
 module.exports = {
-    compare
+    compare,
+    judge
 };
