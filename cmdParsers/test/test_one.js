@@ -26,6 +26,7 @@ let t0 = new Date()*1;
 
 let fpath = `E:/workspaceGerrit/apps-ingage-web/src/main/webapp/static/source/core/rk.js`;
 fpath = `./cases/case1.js`;
+fpath = `E:/workspaceGerrit/apps-ingage-web/src/main/webapp/static/source/core/i18n/vbkup/comments_cn.js`
 
 try{
     let result = parser.parse(parsertype, fpath);

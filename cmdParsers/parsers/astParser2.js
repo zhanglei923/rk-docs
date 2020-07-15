@@ -91,7 +91,10 @@ let getRequires = (jscontent)=>{
     return getPath(requires)
 };
 let parse = (jscontent, fpath)=>{
-    if(jscontent.indexOf('require')<0) return jscontent;//没有require，不需要解析
+    if(jscontent.indexOf('require')<0) return {//没有require，不需要解析
+        requireList:[],
+        requireAsyncList:[]
+    };
     let requireList = [];
     let requireAsyncList = [];
     try{
@@ -102,7 +105,11 @@ let parse = (jscontent, fpath)=>{
         arr.forEach((rawPath)=>{
             requireList.push(rawPath)
         })
-        if(0)fs.writeFileSync(pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json'), JSON.stringify(ast));
+        let debugrpt = pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json');
+        if(0){
+            console.log(debugrpt)
+            fs.writeFileSync(debugrpt, JSON.stringify(ast));
+        }
     }catch(e){
         console.log('fail', fpath)
         //throw e;

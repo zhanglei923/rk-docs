@@ -78,6 +78,10 @@ let getRequires = (jscontent)=>{
     return getPath(requires)
 };
 let parse = (jscontent, fpath)=>{
+    if(jscontent.indexOf('require')<0) return {//没有require，不需要解析
+        requireList:[],
+        requireAsyncList:[]
+    };
     let requireList = [];
     let requireAsyncList = [];
     jscontent = rk.cleanCommentsFast(jscontent);
