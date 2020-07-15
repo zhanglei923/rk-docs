@@ -1,14 +1,14 @@
 let fs = require('fs');
 let pathutil = require('path');
-let parser = require('../cmdParsers/core/parser');
+let parser = require('../core/parser');
 const { fieldSize } = require('tar');
-let rk = require('../utils/rk')
+let rk = require('../../utils/rk')
 let makeDir = require("make-dir")
 let jsonformat = require('json-format')
 let eachcontentjs = require('eachcontent-js');
 
 let thisdir = pathutil.parse(__filename).dir;
-let reportfolder = pathutil.resolve(thisdir, '../report');
+let reportfolder = pathutil.resolve(thisdir, './report');
 makeDir.sync(reportfolder);
 
 let srcfolder = `E:/workspaceGerrit/apps-i${'ngag'}e-web/src/main/webapp/static/source`;
