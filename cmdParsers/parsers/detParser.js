@@ -1,7 +1,7 @@
 var detective = require('detective');
 var fs = require('fs');
 let _ = require('lodash');
-let reg = require('../core/reg');
+let reg = require('./core/reg');
 let rk = require('../../utils/rk');
 
 let getRequires = (jscontent)=>{

@@ -5,21 +5,21 @@ let makeDir = require("make-dir")
 var babel = require("@babel/core");
 const espree = require("espree"); 
 
-let reg = require('../core/reg');
+let reg = require('./core/reg');
 let rk = require('../../utils/rk');
 
 let thisdir = pathutil.parse(__filename).dir;
 let reportfolder = pathutil.resolve(thisdir, '../debug');
 makeDir.sync(reportfolder);
 
-var doPush = function(urlMap, result, path, url){
+var doPush = function(urlMap, result, path, url, ntype){
     if(!url)return;
 	if(url.indexOf('!')>=0) return;//不支持含！的路径
 	if(/^http(s)?\:\/\//ig.test(url)) return;//放过http请求
 	if(url.indexOf('?')>=0) url=url.split('?')[0]
 	if(!urlMap[url] && url)result.push(url)
 	urlMap[url] = true;
-}
+};
 let forEveryNode = (node, callback, keyname)=>{
     if(typeof node !== "string"){
         if(_.isArray(node)){
@@ -46,7 +46,7 @@ let parseAst = (syntaxJson, path)=>{
         if(n && n.type === 'ExpressionStatement' && n.expression && n.expression.type === 'CallExpression' && n.expression.callee && n.expression.callee.type === 'Identifier' && n.expression.arguments)
             if(n.expression.callee.name === 'require' && n.expression.arguments[0]){
                 var url = n.expression.arguments[0].value;
-                doPush(urlMap, result, path, url)
+                doPush(urlMap, result, path, url, n.type)
             }
         //比如：var rk = require(''rk)
         if(n && n.type === 'VariableDeclaration' && _.isArray(n.declarations)){
@@ -55,7 +55,7 @@ let parseAst = (syntaxJson, path)=>{
             if(declarations.init.type==='CallExpression'&&declarations.init.callee&& declarations.init.callee.name==='require'&&_.isArray(declarations.init.arguments)){
                 try{
                     var url = declarations.init.arguments[0].value;
-                    doPush(urlMap, result, path, url)
+                    doPush(urlMap, result, path, url, n.type)
                 }catch(e){
                     console.log('catched exception: ', srcPath, path);
                     throw e;
@@ -65,14 +65,14 @@ let parseAst = (syntaxJson, path)=>{
         if(n && n.type === 'CallExpression' && n.callee&&n.callee.name==='require'&&_.isArray(n.arguments)){
             if(n.arguments[0]){
                 var url = n.arguments[0].value;
-                doPush(urlMap, result, path, url)                                
+                doPush(urlMap, result, path, url, n.type)                                
             }
         }
         if(n&&n.type==='MemberExpression'&&n.object){
             var object = n.object;
             if(object.callee&&object.callee.type=='MemberExpression'&&object.callee.property&&object.callee.property.name==='require'&&_.isArray(object.arguments)){
                 var url = object.arguments[0].value;
-                doPush(urlMap, result, path, url)
+                doPush(urlMap, result, path, url, n.type)
             }
         }
     })
@@ -98,9 +98,14 @@ let parse = (jscontent, fpath)=>{
         const ast = espree.parse(jscontent, { 
             ecmaVersion: 10 
         });
-        requireList = parseAst(ast, fpath);
-        if(0)
-        fs.writeFileSync(pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json'), JSON.stringify(ast));
+        let arr = parseAst(ast, fpath);
+        arr.forEach((rawPath)=>{
+            requireList.push({
+                rawPath,
+                withExport: null
+            })
+        })
+        if(0)fs.writeFileSync(pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json'), JSON.stringify(ast));
     }catch(e){
         console.log('fail', fpath)
         //throw e;
