@@ -9,7 +9,7 @@ const { first } = require('lodash');
 
 let thisdir = pathutil.parse(__filename).dir;
 
-let compare = (srcfolder)=>{
+let compare = (srcfolder, reportfolder)=>{
     let report1 = {};
     let report2 = {};
     let t0 = new Date()*1;
@@ -27,8 +27,8 @@ let compare = (srcfolder)=>{
     let t1 = new Date()*1;
     console.log('cost:', t1-t0);
 
-    fs.writeFileSync('./report1.json', jsonformat(report1));
-    fs.writeFileSync('./report2.json', jsonformat(report2));
+    fs.writeFileSync(pathutil.resolve(reportfolder, './report1.json'), jsonformat(report1));
+    fs.writeFileSync(pathutil.resolve(reportfolder, './report2.json'), jsonformat(report2));
 };
 
 module.exports = {
