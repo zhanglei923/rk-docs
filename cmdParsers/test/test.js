@@ -1,24 +1,32 @@
 let fs = require('fs');
 let pathutil = require('path');
 let parser = require('../core/parser');
-const { fieldSize } = require('tar');
-let rk = require('../../utils/rk')
+var minimist = require('minimist');
 let makeDir = require("make-dir")
 let jsonformat = require('json-format')
 let eachcontentjs = require('eachcontent-js');
+
+let rk = require('../../utils/rk');
+
+// node test --type arg2
+// node test --type reg2
+
+var args = process.argv.splice(2)
+let parsertype = args[1];//'det';//'reg2';
+console.log('type=', parsertype)
 
 let thisdir = pathutil.parse(__filename).dir;
 let reportfolder = pathutil.resolve(thisdir, './report');
 makeDir.sync(reportfolder);
 
 let srcfolder = `E:/workspaceGerrit/apps-i${'ngag'}e-web/src/main/webapp/static/source`;
-let regtype = 'ast2';//'det';//'reg2';
+
 let report = {};
 let t0 = new Date()*1;
 eachcontentjs.eachContent(srcfolder, [/\.js$/], (content, fpath)=>{
     if(!rk.isCookedJsPath(fpath) && !rk.isCookedJs(content)){
         try{
-            let result = parser.parse(regtype, content, fpath);
+            let result = parser.parse(parsertype, content, fpath);
             report[fpath] = result;
         }catch(e){
             console.log(e);
@@ -35,4 +43,4 @@ console.log('cost:', t1-t0);
 // let content = fs.readFileSync(file, 'utf-8');
 
 
-fs.writeFileSync(pathutil.resolve(reportfolder, `./${regtype}.json`), jsonformat(report))
+fs.writeFileSync(pathutil.resolve(reportfolder, `./parser_${parsertype}.json`), jsonformat(report))

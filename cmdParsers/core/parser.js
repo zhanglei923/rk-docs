@@ -1,7 +1,7 @@
 const regParser = require('../parsers/regParser');
 const astParser_v2 = require('../parsers/astParser2');
 const detParser = require('../parsers/detParser');
-const regParser_v2 = require('../parsers/regParser_v2');
+const regParser_v2 = require('../parsers/regParser2');
 
 let getRequiresAsArray = (jscontent)=>{
     let deps = getRequires(jscontent);
@@ -20,7 +20,11 @@ let parse = (type, content, fpath)=>{
     
     let result = parser.parse(content, fpath);
     return result;
-}
+};
+let selfTest = (types)=>{
+
+};
 module.exports = {
+    selfTest,
     parse
 };
