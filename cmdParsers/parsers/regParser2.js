@@ -54,10 +54,6 @@ let reduceContentAsLines = (raw_jscontent)=>{
     })
     return lines;
 }
-let reduceContent = (raw_jscontent)=>{
-    let lines = reduceContentAsLines(raw_jscontent);
-    return lines.join('\n');
-}
 let getRequires = (jscontent)=>{
     let lines = reduceContentAsLines(jscontent);
     if(lines.length===0) return [];
@@ -74,7 +70,7 @@ let getRequires = (jscontent)=>{
             arr.forEach((rawPath)=>{
                 requires.push({
                     rawPath,
-                    withExport
+                    //withExport
                 })
             });
         }
@@ -82,9 +78,12 @@ let getRequires = (jscontent)=>{
     return getPath(requires)
 };
 let parse = (jscontent, fpath)=>{
-    jscontent = rk.cleanCommentsFast(jscontent);
-    let requireList = getRequires(jscontent);
+    let requireList = [];
     let requireAsyncList = [];
+    jscontent = rk.cleanCommentsFast(jscontent);
+    let r = getRequires(jscontent);
+    r.forEach((ro)=>{requireList.push(ro.rawPath);});
+    requireList = _.uniq(requireList);
     return {
         requireList,
         requireAsyncList

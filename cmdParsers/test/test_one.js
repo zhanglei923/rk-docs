@@ -26,18 +26,15 @@ let t0 = new Date()*1;
 
 let fpath = `E:/workspaceGerrit/apps-ingage-web/src/main/webapp/static/source/core/rk.js`;
 fpath = `./cases/case1.js`;
-let content = fs.readFileSync(fpath, 'utf-8');
 
-if(!rk.isCookedJsPath(fpath) && !rk.isCookedJs(content)){
-    try{
-        let result = parser.parse(parsertype, content, fpath);
-        report[fpath] = result;
-    }catch(e){
-        console.log(e);
-        console.log('error:', fpath);
-    }
-    //console.log(result)
+try{
+    let result = parser.parse(parsertype, fpath);
+    report[fpath] = result;
+}catch(e){
+    console.log(e);
+    console.log('error:', fpath);
 }
+//console.log(result)
 let t1 = new Date()*1;
 console.log('cost:', t1-t0);
 

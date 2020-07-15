@@ -100,10 +100,7 @@ let parse = (jscontent, fpath)=>{
         });
         let arr = parseAst(ast, fpath);
         arr.forEach((rawPath)=>{
-            requireList.push({
-                rawPath,
-                withExport: null
-            })
+            requireList.push(rawPath)
         })
         if(0)fs.writeFileSync(pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json'), JSON.stringify(ast));
     }catch(e){
