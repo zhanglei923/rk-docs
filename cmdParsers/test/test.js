@@ -26,7 +26,7 @@ let t0 = new Date()*1;
 eachcontentjs.eachContent(srcfolder, [/\.js$/], (content, fpath)=>{
     if(!rk.isCookedJsPath(fpath) && !rk.isCookedJs(content)){
         try{
-            let result = parser.parse(parsertype, content, fpath);
+            let result = parser.parse(parsertype, fpath);
             report[fpath] = result;
         }catch(e){
             console.log(e);
