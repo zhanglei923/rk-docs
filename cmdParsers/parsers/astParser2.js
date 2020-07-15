@@ -86,7 +86,7 @@ let getRequires = (jscontent)=>{
 
     return getPath(requires)
 };
-let parse = (jscontent, fpath)=>{
+let parse = (jscontent)=>{
     if(jscontent.indexOf('require')<0) return {//没有require，不需要解析
         requireList:[],
         requireAsyncList:[]
@@ -97,18 +97,16 @@ let parse = (jscontent, fpath)=>{
         const ast = espree.parse(jscontent, { 
             ecmaVersion: 10 
         });
-        let arr = parseAst(ast, fpath);
+        let arr = parseAst(ast, '');
         arr.forEach((rawPath)=>{
             requireList.push(rawPath)
         })
-        let debugrpt = pathutil.resolve(reportfolder, fpath.replace(/\//g, '~')+'.json');
         if(0){
             console.log(debugrpt)
             fs.writeFileSync(debugrpt, JSON.stringify(ast));
         }
     }catch(e){
-        console.log('fail', fpath)
-        //throw e;
+        throw e;
     }
 
     return {
