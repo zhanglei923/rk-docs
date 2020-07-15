@@ -6,17 +6,6 @@ const astParser_v2 = require('../astParser2');
 const detParser = require('../detParser');
 const regParser_v2 = require('../regParser2');
 
-let getRequiresAsArray = (deps)=>{
-    let arr = [];
-    deps.forEach((o)=>{
-        arr.push(o.rawPath);
-    })
-    arr = _.uniq(arr);
-    return arr;
-};
-let selfTest = (types)=>{
-
-};
 let parse = (type, fpath)=>{
     if(type === 'reg')  parser = regParser;
     if(type === 'reg2')  parser = regParser_v2;
@@ -32,6 +21,5 @@ let parse = (type, fpath)=>{
     }    
 };
 module.exports = {
-    selfTest,
     parse
 };
