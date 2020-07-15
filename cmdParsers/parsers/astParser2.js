@@ -95,21 +95,6 @@ let parse = (jscontent, fpath)=>{
     let requireList = [];
     let requireAsyncList = [];
     try{
-        var result = babel.transform(jscontent, {
-            plugins: [
-                // "@babel/plugin-proposal-object-rest-spread",
-                // "@babel/plugin-transform-arrow-functions"
-            ],
-            "presets": [//presents 是plugins的集合，npm里有其他定制的presets可用
-                [
-                  "@babel/preset-env",
-                  {
-                    "useBuiltIns": false//"entry"
-                  }
-                ]
-            ]
-          });
-          jscontent = result.code;
         const ast = espree.parse(jscontent, { 
             ecmaVersion: 10 
         });
