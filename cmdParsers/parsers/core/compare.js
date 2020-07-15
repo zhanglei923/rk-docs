@@ -17,28 +17,24 @@ let judge = (report1, report2)=>{
     for(let fpath in report1){
         let o1 = report1[fpath];
         let o2 = report2[fpath];
-        if(!o2){
-            errors.push({
-                errMsg: `one of parser not return fpath ${fpath}`
-            });
-        }else{
+        if(o1 && !o2){
+            errors.push(`one of parser not return fpath ${fpath}`);
+        }
+        if(o1 && o2){
             let requireList1 = o1.requireList;
             let requireList2 = o1.requireList;
             let diff = _.difference(requireList1, requireList2);
             if(diff.length > 0){
-                errors.push({
-                    errMsg: `find different: ${diff}`
-                });
+                errors.push(`find different: ${diff.join(',')}`);
             }
         }
     }
     for(let fpath in report2){
-        if(!report1[fpath]) {
-            errors.push({
-                errMsg: `one of parser not return fpath ${fpath}`
-            });
+        if(report2[fpath] && !report1[fpath]) {
+            errors.push(`one of parser not return fpath ${fpath}`);
         }
     }
+    errors = _.uniq(errors);
     return errors;
 }
 let compare = (srcfolder, reportfolder)=>{
@@ -48,11 +44,14 @@ let compare = (srcfolder, reportfolder)=>{
     eachcontentjs.eachContent(srcfolder, [/\.js$/], (content, fpath)=>{
         try{
             let result1 = parser.parse('reg2', fpath);
-            let result2 = parser.parse('ast2', fpath);
             report1[fpath] = result1;
+        }catch(e){
+            console.log('error:', fpath);
+        }
+        try{
+            let result2 = parser.parse('ast2', fpath);
             report2[fpath] = result2;
         }catch(e){
-            //console.log(e);
             console.log('error:', fpath);
         }
     })
@@ -65,10 +64,11 @@ let compare = (srcfolder, reportfolder)=>{
     }else{
         console.log('reg==ast!')
     }
-    if(0){
-        fs.writeFileSync(pathutil.resolve(reportfolder, './report1.json'), jsonformat(report1));
-        fs.writeFileSync(pathutil.resolve(reportfolder, './report2.json'), jsonformat(report2));
-    }
+    return {
+        report1, 
+        report2,
+        errors
+    };
 };
 
 module.exports = {
