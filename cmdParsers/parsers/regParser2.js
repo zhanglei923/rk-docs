@@ -2,6 +2,13 @@ let _ = require('lodash');
 let reg = require('./reg');
 let rk = require('../../utils/rk');
 
+/******
+ * regParser2
+ * 版本 2020-07-05 19:40
+ * 
+ * 
+ */
+
 var getPath = function(requreResults){
     var pathReg = reg.PATH_REGEX;
     let requirefun = (str)=>{return str;}//用于eval中
