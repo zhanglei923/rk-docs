@@ -2,11 +2,7 @@ var fs = require('fs');
 let pathutil = require('path');
 let _ = require('lodash');
 let makeDir = require("make-dir")
-var babel = require("@babel/core");
 const espree = require("espree"); 
-
-let reg = require('./core/reg');
-let rk = require('../../utils/rk');
 
 let thisdir = pathutil.parse(__filename).dir;
 let reportfolder = pathutil.resolve(thisdir, '../debug');

@@ -1,5 +1,5 @@
 let _ = require('lodash');
-let reg = require('./core/reg');
+let reg = require('./reg');
 let rk = require('../../utils/rk');
 
 var getPath = function(requreResults){
