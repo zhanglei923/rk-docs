@@ -98,17 +98,39 @@ let getRequires = (jscontent)=>{
     })
     return getPath(requires)
 };
-let parse = (jscontent, fpath)=>{
-    if(jscontent.indexOf('require')<0) return {//没有require，不需要解析
+let getAsyncRequires = (jscontent)=>{
+    if(jscontent.indexOf('require.async') < 0) return [];
+    let requires = [];
+    let arr = jscontent.split('require.async');//偷个懒
+    arr.forEach((unit)=>{
+        let body = unit.split(')')[0];//一定会有闭合圆括号，缩小搜索范围
+        body = body.replace(/\s/g, '').replace(/^\(/, '');
+        let result = body.match(/('|"|`)[\w\/\$\{\}\.&\+\-\_\~\:\/\?\=\'\"]{0,}('|"|`)/g)
+        if(result){
+            result.forEach((url)=>{
+                url = url.replace(/^('|"|`)/g,'').replace(/('|"|`)$/g,'');
+                requires.push(url);
+            });
+        }
+    })
+    return requires;
+};
+let parse = (jscontent)=>{
+    if(!jscontent || jscontent.indexOf('require')<0) return {//没有require，不需要解析
         requireList:[],
         requireAsyncList:[]
     };
     let requireList = [];
     let requireAsyncList = [];
     jscontent = cleanCommentsFast(jscontent);
+    let jscontent0 = jscontent;//bkup
     let r = getRequires(jscontent);
     r.forEach((ro)=>{requireList.push(ro.rawPath);});
     requireList = _.uniq(requireList);
+
+    let rasync = getAsyncRequires(jscontent0);
+    requireAsyncList = _.uniq(rasync);
+
     return {
         requireList,
         requireAsyncList
