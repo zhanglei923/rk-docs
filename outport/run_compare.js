@@ -20,13 +20,16 @@ if(!configJsonTxt){
 }
 configJsonTxt = decodeURIComponent(configJsonTxt);
 let configJson = JSON.parse(configJsonTxt);
-
+console.log('configJson=', configJson)
 
 let sourcefolder = configJson.sourcefolder;//`E:/workspaceGerrit/_sub_separation_test/apps-ingage-web`
 let reportfolder = configJson.reportfolder;
+console.log('compare start:')
 let rpt = compare.compare(sourcefolder, reportfolder);
+console.log('compare end:')
 if(fs.existsSync(reportfolder)){
-    fs.writeFileSync(pathutil.resolve(reportfolder, './report1.json'), jsonformat(rpt.report1));
-    fs.writeFileSync(pathutil.resolve(reportfolder, './report2.json'), jsonformat(rpt.report2));
-    fs.writeFileSync(pathutil.resolve(reportfolder, './errors.json'), jsonformat(rpt.errors));
+    let rpt_prefix = configJson.rpt_prefix ? configJson.rpt_prefix : '';
+    fs.writeFileSync(pathutil.resolve(reportfolder, `./${rpt_prefix}report1.json`), jsonformat(rpt.report1));
+    fs.writeFileSync(pathutil.resolve(reportfolder, `./${rpt_prefix}report2.json`), jsonformat(rpt.report2));
+    fs.writeFileSync(pathutil.resolve(reportfolder, `./${rpt_prefix}errors.json`), jsonformat(rpt.errors));
 }
