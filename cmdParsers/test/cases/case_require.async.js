@@ -4,6 +4,9 @@ require.async(`${z3}`)//这种支持！
 require.async('https://www.xiaoshouyi.com?a=1')
 require.async(`https://www.${'xiaoshouyi'}.${sub}.com?a=1`)
 
+require.async(arg0 + arg1.aaa)//这种不支持！
+require.async(opt.customizedUrl)//这种不支持！
+
 require.async("y1", (arg1,arg2,arg3)=>{
 
 })

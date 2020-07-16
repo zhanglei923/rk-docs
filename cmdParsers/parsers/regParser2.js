@@ -108,8 +108,12 @@ let getAsyncRequires = (jscontent)=>{
         let result = body.match(/('|"|`)[\w\/\$\{\}\.&\+\-\_\~\:\/\?\=\'\"]{0,}('|"|`)/g)
         if(result){
             result.forEach((url)=>{
-                url = url.replace(/^('|"|`)/g,'').replace(/('|"|`)$/g,'');
-                requires.push(url);
+                if(url.match(/\+('|"|`)/g) || url.match(/('|"|`)\+/g)){
+                    //用+号拼接字符串的就不要了，解析了也没意义
+                }else{
+                    url = url.replace(/^('|"|`)/g,'').replace(/('|"|`)$/g,'');
+                    requires.push(url);
+                }
             });
         }
     })
